@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tip Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+    }
+
+    .question {
+      display: none;
+    }
+
+    .question.active {
+      display: block;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 5px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    .calculate-btn,
+    .next-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      border: none;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #e6e6e6;
+      border-radius: 3px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Tip Calculator</h2>
+    <div class="question active" id="question1">
+      <label for="bill-amount">How much is your bill?</label>
+      <input type="number" id="bill-amount" placeholder="Enter bill amount">
+      <button class="next-btn" onclick="nextQuestion('question1', 'question2')">Next</button>
+    </div>
+    <div class="question" id="question2">
+      <label for="num-people">How many people ate?</label>
+      <input type="number" id="num-people" placeholder="Enter number of people">
+      <button class="next-btn" onclick="nextQuestion('question2', 'question3')">Next</button>
+    </div>
+    <div class="question" id="question3">
+      <label for="service-rating">Was your server nice to you?</label>
+      <select id="service-rating">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+      <button class="next-btn" onclick="nextQuestion('question3', 'question4')">Next</button>
+    </div>
+    <div class="question" id="question4">
+      <label for="server-visits">How many times did your server come over and check on you?</label>
+      <input type="number" id="server-visits" placeholder="Enter number of server visits">
+      <button class="next-btn" onclick="nextQuestion('question4', 'question5')">Next</button>
+    </div>
+    <div class="question" id="question5">
+      <label for="menu-help">Did your server help you pick from the menu?</label>
+      <select id="menu-help">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+      <button class="next-btn" onclick="nextQuestion('question5', 'question6')">Next</button>
+    </div>
+    <div class="question" id="question6">
+      <label for="server-smile">Did the server have a smile on his/her face?</label>
+      <select id="server-smile">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+      <button class="next-btn" onclick="nextQuestion('question6', 'question7')">Next</button>
+    </div>
+    <div class="question" id="question7">
+      <label for="recommendations">Would you agree with the server's recommendations?</label>
+      <select id="recommendations">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+      <button class="calculate-btn" onclick="calculateTip()">Calculate Tip</button>
+    </div>
+    <div class="result" id="tip-result"></div>
+  </div>
+
+  <script>
+    function nextQuestion(currentQuestionId, nextQuestionId) {
+      var currentQuestion = document.getElementById(currentQuestionId);
+      var nextQuestion = document.getElementById(nextQuestionId);
+
+      currentQuestion.classList.remove('active');
+      nextQuestion.classList.add('active');
+
+      nextQuestion.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function calculateTip() {
+      var billAmount = parseFloat(document.getElementById('bill-amount').value);
+      var numPeople = parseInt(document.getElementById('num-people').value);
+      var serviceRating = document.getElementById('service-rating').value;
+      var serverVisits = parseInt(document.getElementById('server-visits').value);
+      var menuHelp = document.getElementById('menu-help').value;
+      var serverSmile = document.getElementById('server-smile').value;
+      var recommendations = document.getElementById('recommendations').value;
+
+      // Calculate tip based on the provided inputs
+      var tipPercentage = 0;
+
+      if (serviceRating === 'yes') {
+        tipPercentage += 0.2;
+      } else {
+        tipPercentage += 0.1;
+      }
+
+      if (serverVisits > 5) {
+        tipPercentage += 0.05;
+      }
+
+      if (menuHelp === 'yes') {
+        tipPercentage += 0.1;
+      }
+
+      if (serverSmile === 'yes') {
+        tipPercentage += 0.05;
+      }
+
+      if (recommendations === 'yes') {
+        tipPercentage += 0.05;
+      }
+
+      var totalTip = billAmount * tipPercentage;
+      var tipPerPerson = totalTip / numPeople;
+
+      // Display the calculated tip result
+      var tipResult = document.getElementById('tip-result');
+      tipResult.innerHTML = "Total Tip: $" + totalTip.toFixed(2) + "<br>Tip per Person: $" + tipPerPerson.toFixed(2);
+    }
+  </script>
+</body>
+</html>
+
+
